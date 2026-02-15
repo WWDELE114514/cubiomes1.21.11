@@ -9,7 +9,7 @@ STRUCT(Range)
 {
     // Defines an area or volume for the biome generation. It is given by a
     // position, size and scaling in the horizontal axes, and an optional
-    // vertical range. The vertical scaling is equal to 1:1 if scale == 1,
+    // vertical range. The vertical scaling is equal to 1:1 iff scale == 1,
     // and 1:4 (default biome scale) in all other cases!
     //
     // @scale:  Horizontal scale factor, should be one of 1, 4, 16, 64, or 256
@@ -17,7 +17,7 @@ STRUCT(Range)
     //          manual generation entry layer.
     // @x,z:    Horizontal position, i.e. coordinates of north-west corner.
     // @sx,sz:  Horizontal size (width and height for 2D), should be positive.
-    // @y       Vertical position, 1:1 if scale==1, 1:4 otherwise.
+    // @y       Vertical position, 1:1 iff scale==1, 1:4 otherwise.
     // @sy      Vertical size. Values <= 0 are treated equivalent to 1.
     //
     // Volumes generated with a range are generally indexed as:
