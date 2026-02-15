@@ -1,19 +1,17 @@
 #include <inttypes.h>
 
 // This is a patch for 1.21.5 25w04a, when Pale gardens generate more frequently and are overall larger.
-// The name being btree21_11.h is just because the newest Release was 1.21.11 when this file was created.
 
 // The guy who patched this was doing SHCTF where there is a MineCraft OSINT challenge,
 // and realized that the current Cubiomes is not enough.
 // He had no idea how to dump BTree from IntelliJ IDEA, so he just obtained the newest climate data from
 // the official data exporter to compare and modify the btree21wd.h nodes one by one.
-// Let's just say that is Iron Hands.
 
-enum { btree21_11_order = 6 };
+enum { btree215_order = 6 };
 
-static const uint32_t btree21_11_steps[] = { 1555, 259, 43, 7, 1, 0 };
+static const uint32_t btree215_steps[] = { 1555, 259, 43, 7, 1, 0 };
 
-static const int32_t btree21_11_param[][2] =
+static const int32_t btree215_param[][2] =
 {
     {-12000,-10500},{-12000, -4550},{-12000, 10000},{-10500, -4550}, // 00-03
     {-10500, -1900},{-10500, 10000},{-10000, -9333},{-10000, -7799}, // 04-07
@@ -52,7 +50,7 @@ static const int32_t btree21_11_param[][2] =
     { 10000, 10000},{ 10000, 11000},{ 11000, 11000},
 };
 
-static const uint64_t btree21_11_nodes[] =
+static const uint64_t btree215_nodes[] =
 {
     // Binary encoded biome parameter search tree for 1.21 Winter Drop (24w40a).
     //
