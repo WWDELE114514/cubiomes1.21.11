@@ -14,20 +14,25 @@ jobs:
       - name: Build static library
         run: make release
 
-      - name: Build CLI
-        run: cc -O2 -o mcseedcli mcseedcli.c -L. -lcubiomes -lm
-
-      - name: Smoke test (1.21.11)
+      - name: Build tools
         run: |
+          cc -O2 -o mcseedcli mcseedcli.c -L. -lcubiomes -lm
+          cc -O2 -o cbtest cbtest.c -L. -lcubiomes -lm
+
+      - name: Smoke test
+        run: |
+          echo "--- mcseedcli ---"
           ./mcseedcli stronghold 12 1.21.11 | head -6
           ./mcseedcli village 12 -49869 -13702 2000 1.21.11 | head -6
+          echo "--- cbtest (JNA-facing API) ---"
+          ./cbtest
 
       - name: Package
         run: |
           mkdir -p dist/include dist/lib dist/bin
           cp *.h dist/include/
           cp libcubiomes.a dist/lib/
-          cp mcseedcli dist/bin/
+          cp mcseedcli cbtest dist/bin/
           cd dist && zip -r ../cubiomes-1.21.11-linux.zip . && cd ..
 
       - name: Upload artifact
@@ -47,12 +52,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gcc-mingw-w64-x86-64
 
-      - name: Build Windows static lib, DLL and CLI
+      - name: Build Windows static lib, DLL and tools
         run: |
-          x86_64-w64-mingw32-gcc -O3 -fwrapv -D_WIN32 -c noise.c biomes.c layers.c biomenoise.c generator.c finders.c util.c quadbase.c
+          x86_64-w64-mingw32-gcc -O3 -fwrapv -D_WIN32 -c noise.c biomes.c layers.c biomenoise.c generator.c finders.c util.c quadbase.c cbapi.c
           x86_64-w64-mingw32-ar cr libcubiomes.a *.o
           x86_64-w64-mingw32-gcc -O3 -shared -o cubiomes.dll *.o -Wl,--export-all-symbols -lm
           x86_64-w64-mingw32-gcc -O2 -D_WIN32 -o mcseedcli.exe mcseedcli.c -L. -lcubiomes -lm
+          x86_64-w64-mingw32-gcc -O2 -D_WIN32 -o cbtest.exe cbtest.c -L. -lcubiomes -lm
 
       - name: Package
         run: |
@@ -60,7 +66,7 @@ jobs:
           cp *.h dist/include/
           cp libcubiomes.a dist/lib/
           cp cubiomes.dll dist/bin/
-          cp mcseedcli.exe dist/bin/
+          cp mcseedcli.exe cbtest.exe dist/bin/
           cd dist && zip -r ../cubiomes-1.21.11-windows.zip . && cd ..
 
       - name: Upload artifact
